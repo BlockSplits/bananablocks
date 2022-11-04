@@ -1,0 +1,16 @@
+{
+  "name": "bananablocks",
+  "version": "0.1.0",
+  "description": "BananaSplits backend.",
+  "main": "index.ts",
+  "repository": "https://github.com/BlockSplits/bananablocks.git",
+  "license": "MIT",
+  "private": true,
+  "moduleDirectories": [
+    "node_modules",
+    "src"
+  ],
+  "dependencies": {
+    "@supabase/supabase-js": "^2.0.0"
+  }
+}
