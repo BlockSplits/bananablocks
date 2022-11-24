@@ -5,7 +5,7 @@
 import { serve } from "https://deno.land/std@0.131.0/http/server.ts";
 import createDBClient from "../../utils/createDBClient.ts";
 import { isValidAddress } from "../../utils/verifiers.ts";
-import { defaultHeaders } from "../../utils/constants.ts";
+import defaultHeaders from "../../utils/constants.ts";
 import { getAbsentFields } from "../../utils/transformations.ts";
 
 console.log("Initializing createTransaction!");
@@ -41,7 +41,7 @@ serve(async (req) => {
     currency,
     payer,
     participants,
-    creator: creator ?? "",
+    creator,
   });
 
   return new Response("Transaction created.", {
