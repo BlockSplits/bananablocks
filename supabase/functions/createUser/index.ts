@@ -3,23 +3,16 @@
 // This enables autocomplete, go to definition, etc.
 
 import { serve } from "https://deno.land/std@0.131.0/http/server.ts";
+import { defaultHeaders } from "../../utils/constants.ts";
 import { isValidAddress } from "../../utils/verifiers.ts";
 import createDBClient from "../../utils/createDBClient.ts";
-import { getAbsentFields } from "../../utils/transformations.ts";
+import { getAbsentFields, parseJSON } from "../../utils/transformations.ts";
 
 console.log("Initializing createUser!");
-const defaultHeaders = { "Content-Type": "application/text" };
 
 serve(async (req) => {
-  let jsonRequest: { [key: string]: string };
-  try {
-    jsonRequest = await req.json();
-  } catch (e) {
-    return new Response("Failed to parse JSON.", {
-      status: 400,
-      headers: defaultHeaders,
-    });
-  }
+  const jsonRequest = await parseJSON(req).catch((err) => err);
+  if (jsonRequest instanceof Response) return jsonRequest;
 
   // Get missing fields and shows them back to the caller
   const fields = ["name", "address"];
@@ -60,7 +53,6 @@ serve(async (req) => {
   await supabaseClient.from("users").insert({
     name: name,
     address: address,
-    addresses: address,
   });
 
   return new Response("User added.", {
@@ -70,7 +62,7 @@ serve(async (req) => {
 });
 
 // To invoke:
-// curl --request POST 'https://rxljsmfhpnrdqgqkfdqf.functions.supabase.co/createUSer' \
+// curl --request POST 'https://rxljsmfhpnrdqgqkfdqf.functions.supabase.co/createUser' \
 //   --header 'Authorization: Bearer [YOUR TOKEN]' \
 //   --header 'Content-Type: application/json' \
-// --data '{"name":"foo", "address": "0xcd50d80aa269c4f99a92598068fd51f4b0b2a13d"}'
+// --data '{"name":"bar", "address": "0x0acae68c9e57e568e986482af89102c9749e239d"}'

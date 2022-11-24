@@ -6,5 +6,5 @@ export function isValidAddress(address: string) {
 function isHex(h: string) {
   const a = BigInt(h);
   // h begins with 0x while a.toString(16) does not
-  return a.toString(16) === h.toLowerCase().substring(2);
+  return a.toString(16).padStart(40, "0") === h.toLowerCase().substring(2);
 }
